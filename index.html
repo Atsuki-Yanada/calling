@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カウンターボタン</title>
+    <style>
+        #counter {
+            font-size: 24px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="countButton">カウント</button>
+    <span id="counter">0</span>
+
+    <script>
+        // ボタンとカウンターの要素を取得
+        const button = document.getElementById('countButton');
+        const counter = document.getElementById('counter');
+
+        // カウンターの初期値
+        let count = 0;
+
+        // ボタンがクリックされたときにカウンターを増加させるイベントリスナーを追加
+        button.addEventListener('click', () => {
+            count++;
+            counter.textContent = count;
+        });
+    </script>
+</body>
+
+</html>
