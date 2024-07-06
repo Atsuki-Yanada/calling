@@ -1,3 +1,6 @@
+</html>
+
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -23,6 +26,11 @@
             display: none;
         }
 
+        #counter {
+            font-size: 20px;
+            margin: 20px;
+        }
+
         button {
             font-size: 18px;
             padding: 10px 20px;
@@ -35,20 +43,22 @@
     <h1>単語帳アプリ</h1>
     <div id="problem">問題がここに表示されます</div>
     <div id="answer">答えがここに表示されます</div>
+    <div id="counter">めくった枚数: 0</div>
     <button id="showProblem">問題をランダムに表示</button>
     <button id="toggleAnswer">答えを表示/非表示</button>
+    <button id="reset">リセット</button>
 
     <script>
         const data = [
-            ["①○○にそのまま取り次ぐ", "○○です。"],
+            ["①○○にそのまま取り次ぐ", "〇〇です。"],
             ["②③セキュリティルームにかける⇒△△の××様からパーク？？にお電話です。", "トイレに行って席を外しています。"],
-            ["⑤戻り次第の折り返し⇒電話番号下4桁、XXXXでよろしいでしょうか？", "○○さんは外出中ですね（ネクステ14時帰社）"],
-            ["⑥⑦出社次第の折り返し", "○○さんは外出中ですね（本日帰社しない or 18時ごろ帰社予定）"],
+            ["⑤戻り次第の折り返し⇒電話番号下4桁、XXXXでよろしいでしょうか？", "〇〇さんは外出中ですね（ネクステ14時帰社）"],
+            ["⑥⑦出社次第の折り返し", "〇〇さんは外出中ですね（本日帰社しない or 18時ごろ帰社予定）"],
             ["⑧確認取れ次第の折り返し⇒電話番号下4桁、XXXXでよろしいでしょうか？", "〇〇さんはテレワーク中です。"],
-            ["⑨10時出社予定、出社次第の折り返し", "○○さんは出社前ですね（フォンアプリ10時出社予定）"],
-            ["⑩出社次第の折り返し", "○○さんは帰宅済みですね"],
-            ["⑪出社時間 +4(昼挟み +1)時間後出社予定", "○○さんは午前半休ですね"],
-            ["⑫出社次第の折り返し⇒(伝言を)承ります。⇒(メールを確認後、返信するよう)申し伝えます。", "○○さんはお休みですね"],
+            ["⑨10時出社予定、出社次第の折り返し", "〇〇さんは出社前ですね（フォンアプリ10時出社予定）"],
+            ["⑩出社次第の折り返し", "〇〇さんは帰宅済みですね"],
+            ["⑪出社時間 +4(昼挟み +1)時間後出社予定", "〇〇さんは午前半休ですね"],
+            ["⑫出社次第の折り返し⇒(伝言を)承ります。⇒(メールを確認後、返信するよう)申し伝えます。", "〇〇さんはお休みですね"],
             ["⑬別の担当者はご存じでしょうか？", "〇〇さんは退職しています"],
             ["⑭電話が終わり次第の折り返し⇒電話番号下4桁、XXXXでよろしいでしょうか？", "〇〇さんは電話対応中ですね"],
             ["⑮別の担当者をご存じか？⇒確認取れ次第折り返し", "(フォンアプリ、座席表に見当たらない)"],
@@ -60,23 +70,48 @@
             ["例外⑤(保留が埋まっているので、受話器をふさぐ...空いたら)少々お待ちください", "(パークが全部埋まっている)"]
         ];
 
+        let remainingProblems = [...Array(data.length).keys()]; // インデックスの配列を作成
         let currentProblemIndex = -1;
+        let flippedCount = 0;
 
-        document.getElementById('showProblem').addEventListener('click', () => {
-            currentProblemIndex = Math.floor(Math.random() * data.length);
+        function resetProblems() {
+            remainingProblems = [...Array(data.length).keys()];
+            flippedCount = 0;
+            document.getElementById('counter').textContent = `めくった枚数: ${flippedCount}`;
+            document.getElementById('problem').textContent = "問題がここに表示されます";
+            document.getElementById('answer').style.display = 'none';
+            document.getElementById('answer').textContent = "答えがここに表示されます";
+        }
+
+        function showProblem() {
+            if (remainingProblems.length === 0) {
+                resetProblems();
+            }
+
+            const randomIndex = Math.floor(Math.random() * remainingProblems.length);
+            currentProblemIndex = remainingProblems.splice(randomIndex, 1)[0];
             document.getElementById('problem').textContent = data[currentProblemIndex][1];
             document.getElementById('answer').style.display = 'none';
             document.getElementById('answer').textContent = data[currentProblemIndex][0];
-        });
+            flippedCount++;
+            document.getElementById('counter').textContent = `めくった枚数: ${flippedCount}`;
+        }
 
-        document.getElementById('toggleAnswer').addEventListener('click', () => {
+        function toggleAnswer() {
             const answerElement = document.getElementById('answer');
             if (answerElement.style.display === 'none') {
                 answerElement.style.display = 'block';
             } else {
                 answerElement.style.display = 'none';
             }
-        });
+        }
+
+        document.getElementById('showProblem').addEventListener('click', showProblem);
+        document.getElementById('toggleAnswer').addEventListener('click', toggleAnswer);
+        document.getElementById('reset').addEventListener('click', resetProblems);
+
+        // 初期状態をリセット
+        resetProblems();
     </script>
 </body>
 
