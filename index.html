@@ -1,18 +1,15 @@
-</html>
-
-
 <!DOCTYPE html>
 <html lang="ja">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>単語帳アプリ</title>
+    <title>電話研修勉強アプリ</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            padding: 50px;
+            padding: 5px;
         }
 
         #problem {
@@ -21,9 +18,12 @@
         }
 
         #answer {
+            color: red;
             font-size: 24px;
             margin: 20px;
             display: none;
+            white-space: pre-line;
+            /* 改行を反映させる */
         }
 
         #counter {
@@ -40,7 +40,7 @@
 </head>
 
 <body>
-    <h1>電話研修 学習アプリ</h1>
+    <h1>電話研修 勉強</h1>
     <div id="counter">めくった枚数: 0</div>
     <button id="showProblem">問題をランダムに表示</button>
     <button id="toggleAnswer">答えを表示/非表示</button>
@@ -48,7 +48,6 @@
 
     <div id="problem">問題がここに表示されます</div>
     <div id="answer">答えがここに表示されます</div>
-
 
     <script>
         const data = [
@@ -94,7 +93,7 @@
             currentProblemIndex = remainingProblems.splice(randomIndex, 1)[0];
             document.getElementById('problem').textContent = data[currentProblemIndex][1];
             document.getElementById('answer').style.display = 'none';
-            document.getElementById('answer').textContent = data[currentProblemIndex][0];
+            document.getElementById('answer').textContent = data[currentProblemIndex][0].replace(/⇒/g, '\n⇒');
             flippedCount++;
             document.getElementById('counter').textContent = `めくった枚数: ${flippedCount}`;
         }
